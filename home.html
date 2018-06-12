@@ -1,0 +1,175 @@
+<ion-content>
+	<div class="container" id="hiddenUploadDiv">
+		<div class="row">
+			<div class="col-md-3">
+				<div ng2FileDrop
+					[ngClass]="{'file-drop-over': hasDropZone}"
+					(fileOver)="fileOverDropZone($event)"
+					[uploader]="uploader"
+					id="file"
+					class="well drop-zone">
+					<h5 class="drag-label"> Drag File(s) Here To Upload </h5>
+				</div>			
+				<br/>
+					<input type="file" id="file" name="file" ng2FileSelect [uploader]="uploader"  multiple/>
+				<br/>
+			</div>
+		</div>
+	</div>
+	
+	<hr />
+	<div class="container" id="containerdiv">
+		<div class="col-md-9" id="resultsdiv">
+			<div class="results" id="hiddenUploadDiv">
+				<p id="staging-label">Staging Area</p>		
+				<p> File Queue: {{ uploader?.queue?.length }} </p><br/>
+				
+				<div class="progressdiv">
+					<button type="button" class="btn btn-success btn-s"
+						(click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+							<span class="glyphicon glyphicon-upload"></span> Upload All
+						</button>
+						
+					<button type="button" class="btn btn-warning btn-s"
+					(click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+						<span class="glyphicon glyphicon-ban-circle"></span> Cancel All
+					</button>
+					
+					<button type="button" class="btn btn-danger btn-s"
+					(click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+						<span class="glyphicon glyphicon-trash"></span> Remove All
+					</button><br/><br/><br/>
+				</div>
+			</div>
+					
+			<div id="hiddenCalculatedDiv">   
+				<div class="resultsSummary" id="SpanContainer">
+					<ion-item-divider>
+						<span class="block" id="calculated-label"><br/>LW CALCULATED FIELDS PROGRAMS  </span><br/>
+						<ion-icon name="close" id="closeFieldIcon" (click)="showCalculatedField()"></ion-icon>
+					</ion-item-divider>
+					
+					<div class="checkbox-wrapper">
+						<ion-checkbox color="dark" checked="false" (ionChange)="parentDateFieldDataChanged($event)" ></ion-checkbox>
+						<label><br/>&nbsp;&nbsp;Parent Date</label>
+					</div>
+					
+					<div class="checkbox-wrapper">
+						<ion-checkbox color="dark" checked="false" (ionChange)="emailDomainFieldDataChanged($event)" ></ion-checkbox>
+						<label><br/>&nbsp;&nbsp;Email Domain</label>
+					</div>
+					
+					<div class="checkbox-wrapper">
+						<ion-checkbox color="dark" checked="false" (ionChange)="dateTimeFieldDataChanged($event)" ></ion-checkbox>
+						<label><br/>&nbsp;&nbsp;Date/Time Format</label>
+					</div>
+					
+					<ion-item-divider id="hiddenParentDateField">
+						<a (click)="expandParentDateField()"><span class="block" id="calculated-label"><br/>   Parent Date Options  </span><br/>&nbsp;&nbsp;</a>
+						<ion-icon name="close" id="closeFieldIcon" (click)="hideParentDateField()" style="color:white !important"></ion-icon>
+						<ion-icon name="arrow-down" id="expandFieldIcon" (click)="expandParentDateField()" style="color:#f2f2f2 !important"></ion-icon>						
+						<ion-item id="hiddenParentDateDetails">
+							<ion-item><label>Database Name: </label><ion-input placeholder="Database Name:" type="text"></ion-input></ion-item>
+							<ion-item><label>Output File: </label><ion-input placeholder="Output File: C:&#92;Temp&#92;LW_Calculated_fields_overlay_20180323153124.dat"></ion-input></ion-item>
+							<ion-list>
+								<ion-item-divider>LW_MASTERDATE / LWDOCDATE</ion-item-divider>
+								<ion-item><label>LW_DOCID:</label><ion-input placeholder="LW_DOCID"></ion-input></ion-item>
+								<ion-item><label>EndDoc:</label><ion-input placeholder="ENDDOC"></ion-input></ion-item>	
+								<ion-item><label>BegAttach:</label><ion-input placeholder="BEGATTACH"></ion-input></ion-item>		
+								<ion-item><label>LW_ParentDate:</label><ion-input placeholder="LW_PARENTDATE"></ion-input></ion-item>										
+								<ion-item><label>LW_ParentTime:</label><ion-input placeholder="LW_PARENTTIME"></ion-input></ion-item>										
+								<ion-item><label>LW_DocDate:</label><ion-input placeholder="LW_DOCDATE"></ion-input></ion-item>										
+								<ion-item><label>LW_DocTime:</label><ion-input placeholder="LW_DOCTIME"></ion-input></ion-item>																		
+							</ion-list>
+							<br/><button (click)="closeParentDateField()" id="save-button">SAVE AND CLOSE</button><br/>
+						</ion-item>
+					</ion-item-divider>
+				
+					<ion-item-divider id="hiddenEmailDomainField">
+						<a (click)="expandEmailDomainField()"><span class="block" id="calculated-label"><br/>Email Domain Options  </span><br/>&nbsp;&nbsp;</a>
+						<ion-icon name="close" id="closeFieldIcon" (click)="hideEmailDomainField()" style="color:white !important"></ion-icon>
+						<ion-icon name="arrow-down" id="expandFieldIcon" (click)="expandEmailDomainField()" style="color:#f2f2f2 !important"></ion-icon>	
+						<ion-item id="hiddenEmailDomainDetails">
+							<ion-item><label>Database Name: </label><ion-input placeholder="Database Name:" type="text"></ion-input></ion-item>
+							<ion-item><label>Output File: </label><ion-input placeholder="Output File: C:&#92;Temp&#92;LW_Calculated_fields_overlay_20180323153124.dat"></ion-input></ion-item>
+							<ion-list>
+								<ion-item-divider>LW_MASTERDATE / LWDOCDATE</ion-item-divider>
+								<ion-item><label>LW_DOCID:</label><ion-input placeholder="LW_DOCID"></ion-input></ion-item>
+								<ion-item><label>EndDoc:</label><ion-input placeholder="ENDDOC"></ion-input></ion-item>	
+								<ion-item><label>BegAttach:</label><ion-input placeholder="BEGATTACH"></ion-input></ion-item>		
+								<ion-item><label>LW_ParentDate:</label><ion-input placeholder="LW_PARENTDATE"></ion-input></ion-item>										
+								<ion-item><label>LW_ParentTime:</label><ion-input placeholder="LW_PARENTTIME"></ion-input></ion-item>										
+								<ion-item><label>LW_DocDate:</label><ion-input placeholder="LW_DOCDATE"></ion-input></ion-item>										
+								<ion-item><label>LW_DocTime:</label><ion-input placeholder="LW_DOCTIME"></ion-input></ion-item>																		
+							</ion-list>
+							<br/><button (click)="closeEmailDomainField()" id="save-button">SAVE AND CLOSE</button><br/>
+						</ion-item>
+					</ion-item-divider>
+					
+					<ion-item-divider id="hiddenDateTimeField">
+						<a (click)="expandDateTimeField()"><span class="block" id="calculated-label"><br/>Date/Time Options  </span><br/>&nbsp;&nbsp;</a>
+						<ion-icon name="close" id="closeFieldIcon" (click)="hideDateTimeField()" style="color:white !important"></ion-icon>
+						<ion-icon name="arrow-down" id="expandFieldIcon" (click)="expandDateTimeField()" style="color:#f2f2f2 !important"></ion-icon>	
+						<ion-item id="hiddenDateTimeDetails">
+							<ion-item><label>Database Name: </label><ion-input placeholder="Database Name:" type="text"></ion-input></ion-item>
+							<ion-item><label>Output File: </label><ion-input placeholder="Output File: C:&#92;Temp&#92;LW_Calculated_fields_overlay_20180323153124.dat"></ion-input></ion-item>
+							<ion-list>
+								<ion-item-divider>LW_MASTERDATE / LWDOCDATE</ion-item-divider>
+								<ion-item><label>LW_DOCID:</label><ion-input placeholder="LW_DOCID"></ion-input></ion-item>
+								<ion-item><label>EndDoc:</label><ion-input placeholder="ENDDOC"></ion-input></ion-item>	
+								<ion-item><label>BegAttach:</label><ion-input placeholder="BEGATTACH"></ion-input></ion-item>		
+								<ion-item><label>LW_ParentDate:</label><ion-input placeholder="LW_PARENTDATE"></ion-input></ion-item>										
+								<ion-item><label>LW_ParentTime:</label><ion-input placeholder="LW_PARENTTIME"></ion-input></ion-item>										
+								<ion-item><label>LW_DocDate:</label><ion-input placeholder="LW_DOCDATE"></ion-input></ion-item>										
+								<ion-item><label>LW_DocTime:</label><ion-input placeholder="LW_DOCTIME"></ion-input></ion-item>																		
+							</ion-list>
+							<br/><button (click)="closeDateTimeField()" id="save-button">SAVE AND CLOSE</button><br/>
+						</ion-item>
+					</ion-item-divider>			
+				</div> 
+			</div>	
+			
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Filename</th>
+						<th>Size</th>
+						<th>Type</th>
+						<th>Progress</th>
+						<th>Status</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+			
+				<tbody>
+					<tr *ngFor="let item of uploader.queue">
+						<td>{{ item?.file?.name }}</td>
+						<td>{{ DisplaySize(item)}}</td>
+						<td>{{ item?.file?.type }}</td>
+						<td>
+						<div class="progress" style="margin-bottom: 0;">
+							<div class="progress-bar progress-bar-striped bg-danger" role="progressbar"  style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+						</div>
+						</td>
+						 <td class="text-center">
+							<span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok" style="color:red"></i></span>
+							<span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+							<span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+						</td>
+						<td no-wrap>
+							<div class="dropdown">
+								<button class="dropbtn">No Actions</button>
+								<div class="dropdown-content">
+									<a (click)="item.upload()">Upload</a>
+									<a (click)="item.remove()">Delete</a>
+									<a (click)="showCalculatedField()">LW Calculated Field Program</a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>	
+</ion-content>
+
